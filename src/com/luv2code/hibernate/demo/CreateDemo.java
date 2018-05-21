@@ -22,26 +22,23 @@ public class CreateDemo {
 		Session session = factory.getCurrentSession();
 		
 		try {
-			//create the objects
-			//Instructor tempInstructor = new Instructor("Geeta", "Wisvas", "Geeta@luv2code.com");
-			//InstructorDetail instructorDetail = new InstructorDetail("https://www.luv2code.com/youtube","Love to code");
-			
-			Instructor tempInstructor = new Instructor("Karan", "Prakash", "myname@luv2code.com");
-			InstructorDetail instructorDetail = new InstructorDetail("https://www.mynewchannel.com/youtube","Guitar");
-			
-			//associate the objects
-			tempInstructor.setInstructorDetail(instructorDetail);
-
-			
-			// start a transaction
+			//start transaction
 			session.beginTransaction();
 			
-			//save the instructor
-			//
-			// Note : this will also save the details object
-			// because of CascadeType.ALL
-			System.out.println("Saving Instructor : "+tempInstructor);
-			session.save(tempInstructor);
+			// get instructor by primary key/ id
+			int theId = 1;
+			Instructor tempInstructor = session.get(Instructor.class, theId);
+			
+			System.out.println("Found Instructor : "+tempInstructor);
+			
+			// delete the instructor
+			if(tempInstructor != null) {
+				System.out.println("Deleting : "+tempInstructor);
+				
+				// Note : also delete associated "details" object
+				// because of CascadeType.ALL
+				session.delete(tempInstructor);
+			}
 			
 			// commit transaction
 			session.getTransaction().commit();
